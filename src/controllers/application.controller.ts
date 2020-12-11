@@ -10,7 +10,7 @@ class ApplicationController {
     console.log(m)
     model = m
   }
-  create(req, res, options = {}, callback = null) {
+  create(req, res, next) {
     req.getValidationResult()
     .then(function(result) {
       if (result.isEmpty()) {
@@ -24,17 +24,18 @@ class ApplicationController {
   }
  
 
-  findOne(req, res, callback = null) {
-    req.getValidationResult().then(function(result) {
+  async findOne(req, res, next) {
+   await req.getValidationResult().then(function(result) {
       if (result.isEmpty()) {
         return db[model].login(req.body)
       } else {
         res.boom.badRequest('Validation errors', result.mapped())
       }
+     
     })
-    .then(appuser => res.status(200).send(appuser))
     .catch(error => res.boom.badRequest(error))
-
+    next();
+    
   }
 
   private model() {

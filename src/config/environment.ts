@@ -1,4 +1,6 @@
-require('dotenv').config()
+import * as dotenv from 'dotenv'; 
+
+dotenv.config();
 module.exports = {
    development: {
      db : process.env.DB,
@@ -9,3 +11,4 @@ module.exports = {
      port: process.env.PORT
    }
  }
+

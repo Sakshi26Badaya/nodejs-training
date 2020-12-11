@@ -1,4 +1,4 @@
-module.exports = {
+exports = {
   development: {
     db : process.env.DB,
     host : process.env.DB_HOST,
