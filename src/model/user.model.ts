@@ -1,59 +1,47 @@
-import {createJWToken} from '../config/auth'
+import {auth} from '../config/auth'
 import * as bcrypt from 'bcrypt'
 import * as dotenv from 'dotenv';
+import { sequelize } from '../config/sequelize';
+import * as Sequelize from "sequelize";
+  dotenv.config();
 
-dotenv.config();
-
-module.exports = function(sequelize, DataTypes) {
-  const User = sequelize.define('User', {
+  const User = sequelize.define("User", 
+  {
     id: {
       allowNull: false,
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV1,
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV1,
       primaryKey: true
     },
     firstName: {
       allowNull: false,
-      type: DataTypes.STRING
+      type: Sequelize.STRING
     },
     lastName: {
       allowNull: false,
-      type: DataTypes.STRING
+      type: Sequelize.STRING
     },
     
     password: {
       allowNull: false,
-      type: DataTypes.STRING,
-      validate: {
-        notEmpty: true,
-        len: [6, 100]
-      }
+      type: Sequelize.STRING
     },
     
     email: {
       allowNull: false,
-      type: DataTypes.STRING,
-      validate: {
-        len: {
-          args: [6, 128],
-          msg: 'Email address must be between 6 and 128 characters in length'
-        },
-        isEmail: {
-          msg: 'Email address must be valid'
-        }
-      }
+      type: Sequelize.STRING,
     },
-  }, {
-    indexes: [{unique: true, fields: ['email']}],
-    timestamps: true,
-    freezeTableName: true,
-    tableName: 'users'
-  })
-
+  },
+    {
+     
+      tableName: "User",
+    }
+  );
+  
 
   User.prototype.generateToken = function generateToken() {
     console.log('JWT:' + process.env.SECRET)
-    return createJWToken({ email: this.email, id: this.id})
+    return auth.createJWTToken({ email: this.email, id: this.id})
   }
 
   User.prototype.authenticate = function authenticate(value) {
@@ -62,5 +50,5 @@ module.exports = function(sequelize, DataTypes) {
     else
       return false
   }
-  return User
-}
+
+export default User;

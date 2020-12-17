@@ -9,6 +9,6 @@ export class RegistrationController extends ApplicationController {
     req.checkBody('lastName', 'Last Name must be between 2 and 50 characters in length.').isLength({ min: 2 , max: 50 })
     req.checkBody('password', 'Password should be at least 6 chars long.').isLength({ min: 6 })
     req.pick = ['email', 'firstName', 'lastName', 'password' ]
-    return super.create(req , res, {message: 'Congrats! You have successfully registered'} )
+    return super.createNewUser(req , res, {message: 'Congrats! You have successfully registered'} )
   }
 }

@@ -8,9 +8,9 @@ export function initRoutes(app, router) {
   
   const registration = new RegistrationController()
   const login = new LoginController()
-  apiRoute.get('/', (req, res) => res.status(200).send({message: 'Api Server is running!'}))
-  apiRoute.post('/v1/login', login.login)
-  apiRoute.post('/v1/signup/', registration.signup)
+  //apiRoute.get('/', (req, res) => res.status(200).send({message: 'Api Server is running!'}))
+  apiRoute.post('/login', login.login)
+  apiRoute.post('/signup', registration.signup)
 
   apiRoute.route('*').all(verifyJWT_MW)
   return apiRoute

@@ -6,10 +6,11 @@ import { json, urlencoded } from 'body-parser'
 import { Express } from 'express'
 import * as routes from './routes/';
 import * as winston from 'winston'
-
+import * as swaggerUi from 'swagger-ui-express';
+import * as yaml from 'yamljs';
 
 dotenv.config();
-
+const swaggerDocument: any = yaml.load('./swagger.yaml');
 const PORT: number = Number(process.env.PORT);
 
 
@@ -26,14 +27,16 @@ export class Server {
     this.app.use(urlencoded({
       extended: true
     }))
-    this.app.use(json())
-    
+    this.app.use(express.json())
+    //routes.initRoutes(this.app)
+    this.app.use("/", routes.initRoutes);
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     
       this.app.listen(PORT, () => {
         winston.log('info', '--> Server successfully started at port', PORT)
       })
     
-    routes.initRoutes(this.app)
+   
   }
 
   getApp() {

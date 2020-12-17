@@ -1,30 +1,43 @@
-const _ = require('lodash')
+
 import db from '../model'
+import User from '../model/user.model'
+const { body, validationResult } = require('express-validator');
 let model = ''
 
 
 class ApplicationController {
-  errors: any
+ 
  
   constructor(m) {
     console.log(m)
     model = m
   }
-  create(req, res, next) {
-    req.getValidationResult()
-    .then(function(result) {
-      if (result.isEmpty()) {
-        return db[model].create(req.body)
-          .then(appuser => res.status(201).send(appuser))
-          .catch(error => res.boom.badRequest(error))
-      } else {
-        res.boom.badRequest('Validation errors', result.mapped())
-      }
-    })
-  }
- 
+ async createNewUser(req, res, next) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+  
+   await User.create({
+      firstName:req.body.firstName,
+      lastName:req.body.lastname,
+      email: req.body.email,
+      password: req.body.password
+    }).then(user => res.json(user));
 
-  async findOne(req, res, next) {
+  }
+    // req.getValidationResult()
+    // .then(function(result) {
+    //   if (result.isEmpty()) {
+    //     return db[model].create(req.body)
+    //       .then(user => res.status(201).send(user))
+    //       .catch(error => res.boom.badRequest(error))
+    //   } else {
+    //     res.boom.badRequest('Validation errors', result.mapped())
+    //   }
+    // })
+
+  async findOneUser(req, res, next) {
    await req.getValidationResult().then(function(result) {
       if (result.isEmpty()) {
         return db[model].login(req.body)
@@ -34,7 +47,6 @@ class ApplicationController {
      
     })
     .catch(error => res.boom.badRequest(error))
-    next();
     
   }
 

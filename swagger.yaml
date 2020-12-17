@@ -1,0 +1,101 @@
+swagger: '2.0'
+info:
+  openapi: '2.0.0'
+  title: Nodejs training
+  description: 'Nodejs training'
+
+host: 'localhost:3000'
+basePath: /api-docs
+schemes:
+- http
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+/login:
+    post:
+      description: Login with email and password.
+      summary: login
+      tags:
+      - login
+      operationId: LoginPost
+      produces:
+      - application/json; charset=utf-8
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/login'
+      - name: Content-Type
+        in: header
+        required: false
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/login'
+          headers:
+            X-Powered-By:
+              type: string
+              default: Express
+            Access-Control-Allow-Origin:
+              type: string
+              default: '*'
+            X-Content-Type-Options:
+              type: string
+              default: nosniff
+            Content-Length:
+              type: string
+              default: 539
+            Connection:
+              type: string
+              default: keep-alive
+/signup:
+    post:
+      description: Sign up
+      summary: Sign up
+      tags:
+      - Sign up
+      operationId: SignUpPost
+      produces:
+      - application/json; charset=utf-8
+      parameters:
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/Signup'
+      - name: Content-Type
+        in: header
+        required: false
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/Signup'
+          
+          headers:
+            X-Powered-By:
+              type: string
+              default: Express
+            Access-Control-Allow-Origin:
+              type: string
+              default: '*'
+            X-Content-Type-Options:
+              type: string
+              default: nosniff
+            Content-Length:
+              type: string
+              default: 330
+            Connection:
+              type: string
+              default: keep-alive
